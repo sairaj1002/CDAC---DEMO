@@ -1,0 +1,5 @@
+package com.cdac.servise;
+
+public interface WMS_Service {
+
+}

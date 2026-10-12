@@ -1,0 +1,33 @@
+package com.cdac.dto;
+
+import java.time.LocalDate;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class WorkDetailsRequestForm {
+
+    @NotBlank(message = "Work details cannot be blank")
+    private String workDetails;
+
+    @NotNull(message = "Actual start date is required")
+    private LocalDate actualStartDate;
+
+    @NotBlank(message = "Contractor name cannot be blank")
+    private String contractorName;
+
+    @NotNull(message = "Stipulated start date is required")
+    private LocalDate stipulatedStartDate;
+
+    @NotNull(message = "Stipulated end date is required")
+    private LocalDate stipulatedEndDate;
+}

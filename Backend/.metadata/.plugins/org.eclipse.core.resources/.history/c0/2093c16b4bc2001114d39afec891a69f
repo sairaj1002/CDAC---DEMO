@@ -1,0 +1,109 @@
+package com.cdac.controller;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.cdac.dto.WorkDetailsRequestDTO;
+import com.cdac.dto.WorkDetailsResponseDTO;
+import com.cdac.service.WorkService;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/api/work")
+public class WorkController {
+
+    private final WorkService workService;
+
+    public WorkController(WorkService workService) {
+        this.workService = workService;
+    }
+
+    // =====================================================
+    // CREATE
+    // POST /api/work
+    // =====================================================
+
+    @PostMapping
+    public ResponseEntity<WorkDetailsResponseDTO> createWorkDetails(
+            @Valid @RequestBody WorkDetailsRequestDTO requestDTO) {
+
+        WorkDetailsResponseDTO response =
+                workService.createWorkDetails(requestDTO);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+
+    // =====================================================
+    // READ - GET ALL
+    // GET /api/work
+    // =====================================================
+
+    @GetMapping
+    public ResponseEntity<List<WorkDetailsResponseDTO>> getAllWorkDetails() {
+
+        List<WorkDetailsResponseDTO> response =
+                workService.getAllWorkDetails();
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    // =====================================================
+    // READ - GET BY ID
+    // GET /api/work/{workRegNo}
+    // =====================================================
+
+    @GetMapping("/{workRegNo}")
+    public ResponseEntity<WorkDetailsResponseDTO>
+    getWorkDetailsByWorkRegNo(
+            @PathVariable Long workRegNo) {
+
+        WorkDetailsResponseDTO response =
+                workService.getWorkDetailsByWorkRegNo(workRegNo);
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    // =====================================================
+    // UPDATE
+    // PUT /api/work/{workRegNo}
+    // =====================================================
+
+    @PutMapping("/{workRegNo}")
+    public ResponseEntity<WorkDetailsResponseDTO>
+    updateWorkDetails(
+            @PathVariable Long workRegNo,
+            @Valid @RequestBody WorkDetailsRequestDTO requestDTO) {
+
+        WorkDetailsResponseDTO response =
+                workService.updateWorkDetails(
+                        workRegNo,
+                        requestDTO
+                );
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    // =====================================================
+    // DELETE
+    // DELETE /api/work/{workRegNo}
+    // =====================================================
+
+    @DeleteMapping("/{workRegNo}")
+    public ResponseEntity<Void> deleteWorkDetails(
+            @PathVariable Long workRegNo) {
+
+        workService.deleteWorkDetails(workRegNo);
+
+        return ResponseEntity.noContent().build();
+    }
+}

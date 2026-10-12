@@ -1,0 +1,9 @@
+package com.cdac.forms;
+
+import lombok.*;
+import jakarta.persistence.Table;
+
+@Table
+public class Work_Details {
+
+}

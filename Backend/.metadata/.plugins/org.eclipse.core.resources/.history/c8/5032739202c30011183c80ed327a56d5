@@ -1,0 +1,29 @@
+package com.cdac.entities;
+
+import org.hibernate.envers.RevisionListener;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+
+@Component
+public class AuditRevisionListener implements RevisionListener {
+
+    @Override
+    public void newRevision(Object revisionEntity) {
+
+        AuditRevision revision =
+                (AuditRevision) revisionEntity;
+
+        Authentication authentication =
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication();
+
+        if (authentication != null &&
+            authentication.isAuthenticated()) {
+
+            revision.setUserId(authentication.getName());
+            revision.setUserName(authentication.getName());
+        }
+    }
+}

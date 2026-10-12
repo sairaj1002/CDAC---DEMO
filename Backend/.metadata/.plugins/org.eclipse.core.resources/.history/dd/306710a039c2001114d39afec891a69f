@@ -1,0 +1,18 @@
+package com.cdac.service;
+
+import java.util.List;
+
+import com.cdac.froms.WorkDetails;
+
+public interface WorkService {
+
+    WorkDetails createWorkDetails(WorkDetails workDetails);
+
+    WorkDetails getWorkDetailsByidDetails(Long workRegNo);
+
+    List<WorkDetails> getAllWorkDetails();
+
+    WorkDetails updateWorkDetails(Long workRegNo, WorkDetails workDetails);
+
+    void deleteWorkDetails(Long workRegNo);
+}

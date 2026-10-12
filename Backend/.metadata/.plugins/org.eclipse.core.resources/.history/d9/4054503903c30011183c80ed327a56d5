@@ -1,0 +1,29 @@
+package com.cdac.audits;
+
+@Entity
+@Table(name = "audit_revision")
+@RevisionEntity(AuditRevisionListener.class)
+public class AuditRevision {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @RevisionNumber
+    private Long id;
+
+    @RevisionTimestamp
+    private long timestamp;
+
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Column(name = "user_name")
+    private String userName;
+
+    @Column(name = "ip_address")
+    private String ipAddress;
+
+    @Column(name = "mac_address")
+    private String macAddress;
+
+    // getters and setters
+}

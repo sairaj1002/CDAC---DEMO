@@ -1,0 +1,126 @@
+package com.cdac.service;
+
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
+import com.cdac.forms.WorkDetailsRequestForm;
+import com.cdac.froms.WorkDetailsResponseForm;
+import com.cdac.entities.WorkDetails;
+import com.cdac.repository.WorkRepository;
+
+@Service
+public class WorkServiceImpl implements WorkService {
+
+    private final WorkRepository workRepository;
+    private final ModelMapper modelMapper;
+
+    public WorkServiceImpl(
+            WorkRepository workRepository,
+            ModelMapper modelMapper) {
+
+        this.workRepository = workRepository;
+        this.modelMapper = modelMapper;
+    }
+
+    @Override
+    public WorkDetailsResponseDTO createWorkDetails(
+            WorkDetailsRequestDTO requestDTO) {
+
+        // DTO → Entity
+        WorkDetails workDetails =
+                modelMapper.map(
+                        requestDTO,
+                        WorkDetails.class
+                );
+
+        // Save entity
+        WorkDetails savedWork =
+                workRepository.save(workDetails);
+
+        // Entity → Response DTO
+        return modelMapper.map(
+                savedWork,
+                WorkDetailsResponseDTO.class
+        );
+    }
+
+    @Override
+    public WorkDetailsResponseDTO getWorkDetailsByWorkRegNo(
+            Long workRegNo) {
+
+        WorkDetails workDetails =
+                workRepository.findById(workRegNo)
+                .orElseThrow(() ->
+                    new RuntimeException(
+                        "Work details not found with work registration number: "
+                        + workRegNo
+                    )
+                );
+
+        return modelMapper.map(
+                workDetails,
+                WorkDetailsResponseDTO.class
+        );
+    }
+
+    @Override
+    public List<WorkDetailsResponseDTO> getAllWorkDetails() {
+
+        return workRepository.findAll()
+                .stream()
+                .map(workDetails ->
+                    modelMapper.map(
+                        workDetails,
+                        WorkDetailsResponseDTO.class
+                    )
+                )
+                .toList();
+    }
+
+    @Override
+    public WorkDetailsResponseDTO updateWorkDetails(
+            Long workRegNo,
+            WorkDetailsRequestDTO requestDTO) {
+
+        WorkDetails existingWork =
+                workRepository.findById(workRegNo)
+                .orElseThrow(() ->
+                    new RuntimeException(
+                        "Work details not found with work registration number: "
+                        + workRegNo
+                    )
+                );
+
+        // DTO → Existing Entity
+        modelMapper.map(
+                requestDTO,
+                existingWork
+        );
+
+        // Save updated entity
+        WorkDetails updatedWork =
+                workRepository.save(existingWork);
+
+        // Entity → Response DTO
+        return modelMapper.map(
+                updatedWork,
+                WorkDetailsResponseDTO.class
+        );
+    }
+
+    @Override
+    public void deleteWorkDetails(Long workRegNo) {
+
+        if (!workRepository.existsById(workRegNo)) {
+
+            throw new RuntimeException(
+                "Work details not found with work registration number: "
+                + workRegNo
+            );
+        }
+
+        workRepository.deleteById(workRegNo);
+    }
+}

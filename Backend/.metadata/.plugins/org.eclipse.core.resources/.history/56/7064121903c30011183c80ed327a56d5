@@ -1,0 +1,22 @@
+package com.cdac.audits;
+
+@Component
+public class AuditRevisionListenerimplements RevisionListener {
+
+    @Override
+    public void newRevision(Object revisionEntity) {
+
+        AuditRevision revision =
+                (AuditRevision) revisionEntity;
+
+        AuditUser user = AuditContext.getUser();
+
+        if (user != null) {
+
+            revision.setUserId(user.getUserId());
+            revision.setUserName(user.getUserName());
+            revision.setIpAddress(user.getIpAddress());
+            revision.setMacAddress(user.getMacAddress());
+        }
+    }
+}

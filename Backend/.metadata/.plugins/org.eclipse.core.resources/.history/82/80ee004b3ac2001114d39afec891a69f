@@ -1,0 +1,19 @@
+package com.cdac.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.stereotype.Repository;
+
+import com.cdac.froms.WorkDetails;
+
+@Repository
+@EnableJpaAuditing
+@EnableJpaRepositories
+public interface WorkRepository extends JpaRepository<WorkDetails , Long>{
+
+	WorkDetails getByWorkRegNo(Long workRegNo);
+	
+	void deleteByReqNo(Long workRegNo);
+
+}
