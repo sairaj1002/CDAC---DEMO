@@ -75,6 +75,20 @@ public class WorkReportServiceImpl implements WorkReportService {
     }
 
     @Override
+    public List<WorkResponse> getContractorDetails(LocalDate fromDate, LocalDate toDate, String contractor) {
+        validateDateRange(fromDate, toDate);
+        if (contractor == null || contractor.isBlank()) {
+            throw new BusinessException("Contractor is required");
+        }
+        return workRepository.findAll(
+                        WorkSpecification.matchingContractorReportDetails(fromDate, toDate, contractor))
+                .stream()
+                .map(workMapper::toResponse)
+                .sorted(Comparator.comparing(WorkResponse::getWorkRegNo))
+                .toList();
+    }
+
+    @Override
     public WorkReportSummary getSummary(LocalDate fromDate, LocalDate toDate, String contractor) {
         List<WorkResponse> works = getWorkRegister(fromDate, toDate, contractor);
         Map<String, Long> contractorCounts = works.stream()

@@ -1,6 +1,7 @@
 package com.company.enterprise.features.wms.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ContentDisposition;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.company.enterprise.core.response.ApiResponse;
 import com.company.enterprise.features.wms.dto.response.WorkReportSummary;
+import com.company.enterprise.features.wms.dto.response.WorkResponse;
 import com.company.enterprise.features.wms.service.WorkReportService;
 
 @RestController
@@ -34,6 +36,16 @@ public class WorkReportController {
         return ApiResponse.success(
                 "Work report summary generated successfully",
                 reportService.getSummary(fromDate, toDate, contractor));
+    }
+
+    @GetMapping("/details")
+    public ApiResponse<List<WorkResponse>> getContractorDetails(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+            @RequestParam String contractor) {
+        return ApiResponse.success(
+                "Contractor work details retrieved successfully",
+                reportService.getContractorDetails(fromDate, toDate, contractor));
     }
 
     @GetMapping(value = "/work-register.pdf", produces = MediaType.APPLICATION_PDF_VALUE)

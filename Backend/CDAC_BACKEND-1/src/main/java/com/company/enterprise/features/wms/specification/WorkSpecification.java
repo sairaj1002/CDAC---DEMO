@@ -49,4 +49,22 @@ public final class WorkSpecification {
             return builder.and(predicates.toArray(Predicate[]::new));
         };
     }
+
+    public static Specification<WorkEntity> matchingContractorReportDetails(
+            LocalDate fromDate,
+            LocalDate toDate,
+            String contractor) {
+        String exactContractor = contractor.trim().toLowerCase(Locale.ROOT);
+        return (root, query, builder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (fromDate != null) {
+                predicates.add(builder.greaterThanOrEqualTo(root.get("stipulatedStartDate"), fromDate));
+            }
+            if (toDate != null) {
+                predicates.add(builder.lessThanOrEqualTo(root.get("stipulatedStartDate"), toDate));
+            }
+            predicates.add(builder.equal(builder.lower(root.get("contractorName")), exactContractor));
+            return builder.and(predicates.toArray(Predicate[]::new));
+        };
+    }
 }
