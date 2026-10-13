@@ -1,4 +1,0 @@
-spring.application.name=CDAC_BACKEND-1
-spring.datasource.url=jdbc:postgresql://localhost:5432/CDAC-db
-spring.datasource.username=postgres
-spring.datasource.password=sunbeam

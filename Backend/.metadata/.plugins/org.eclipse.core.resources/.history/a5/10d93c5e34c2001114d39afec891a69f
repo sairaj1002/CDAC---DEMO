@@ -1,5 +1,0 @@
-package com.cdac.service.copy;
-
-public interface WMS_Service {
-
-}

@@ -1,7 +1,0 @@
-spring.application.name=CDAC_BACKEND-1
-spring.datasource.url=jdbc:postgresql://localhost:5432/work_management_system
-spring.datasource.username=postgres
-spring.datasource.password=sunbeam
-
-spring.jpa.show-sql=true
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
